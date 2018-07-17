@@ -13,6 +13,9 @@
     "spryker/code-sniffer": "*",
     "spryker/testify": "*"
   },
+  "support": {
+    "source": "https://github.com/spryker/uuid-behavior"
+  },
   "autoload": {
     "psr-4": {
       "Spryker\\": "src/Spryker/"
@@ -20,16 +23,16 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "scripts": {
-    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/uuid-behavior/,/templates/ ./",
-    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/uuid-behavior/,/templates/ ./"
-  },
   "extra": {
     "name": "uuid",
     "class": "\\Spryker\\Zed\\UuidBehavior\\Persistence\\Propel\\Behavior\\UuidBehavior",
     "branch-alias": {
-      "dev-master": "1.0.x-dev"
+      "dev-master": "1.0.x-dev",
     }
+  },
+  "scripts": {
+    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/uuid-behavior/vendor/,/templates/ ./",
+    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/uuid-behavior/vendor/,/templates/ ./"
   },
   "config": {
     "sort-packages": true
