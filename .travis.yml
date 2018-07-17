@@ -18,8 +18,7 @@ install:
     - composer install --no-interaction --prefer-dist
 
 script:
-    - vendor/bin/phpcs src --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml
-    - vendor/bin/codecept run --env isolated --coverage-xml
+    - vendor/bin/phpcs src --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/uuid-behavior/vendor/,/templates/ ./
 
 after_success:
     - vendor/bin/coveralls -vvv
