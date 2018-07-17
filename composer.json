@@ -27,7 +27,7 @@
     "name": "uuid",
     "class": "\\Spryker\\Zed\\UuidBehavior\\Persistence\\Propel\\Behavior\\UuidBehavior",
     "branch-alias": {
-      "dev-master": "1.0.x-dev",
+      "dev-master": "1.0.x-dev"
     }
   },
   "scripts": {
