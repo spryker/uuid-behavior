@@ -96,11 +96,11 @@ class UuidBehavior extends Behavior
     }
 
     /**
-     * @throws \Spryker\Zed\KeyGenerationBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException
+     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException
      *
      * @return string
      */
-    protected function addSetUuidMethod(): string
+    protected function addSetGeneratedUuidMethod(): string
     {
         $parameters = $this->getParameters();
         $keyValues = null;
@@ -122,7 +122,9 @@ class UuidBehavior extends Behavior
 
             $filter = new UnderscoreToCamelCase();
             foreach ($columns as $column) {
-                $keyValues[] = sprintf('get%s()', $filter->filter($column));
+                if ($this->getTable()->hasColumn($column)) {
+                    $keyValues[] = sprintf('get%s()', $filter->filter($column));
+                }
             }
         }
 
