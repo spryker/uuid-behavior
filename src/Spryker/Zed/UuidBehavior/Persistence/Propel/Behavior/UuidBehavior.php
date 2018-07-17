@@ -9,7 +9,7 @@ namespace Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior;
 use Propel\Generator\Model\Behavior;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Generator\Model\Unique;
-use Spryker\Zed\KeyGenerationBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException;
+use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 
 class UuidBehavior extends Behavior
@@ -44,7 +44,7 @@ class UuidBehavior extends Behavior
      */
     public function preSave(): string
     {
-        return '$this->setUuid();';
+        return '$this->setGeneratedUuid();';
     }
 
     /**
@@ -54,7 +54,7 @@ class UuidBehavior extends Behavior
     {
         $script = '';
         $script .= $this->addGetUuidGeneratorServiceMethod();
-        $script .= $this->addSetUuidMethod();
+        $script .= $this->addSetGeneratedUuidMethod();
 
         return $script;
     }
@@ -132,7 +132,7 @@ class UuidBehavior extends Behavior
             }
         }
 
-        return $this->renderTemplate('objectSetUuid', [
+        return $this->renderTemplate('objectSetGeneratedUuid', [
             'name' => $name,
         ]);
     }

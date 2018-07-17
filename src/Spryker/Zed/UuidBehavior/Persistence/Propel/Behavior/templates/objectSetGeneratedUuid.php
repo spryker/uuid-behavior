@@ -1,7 +1,7 @@
 /**
 * @return void
 */
-protected function setGeneratedKey()
+protected function setGeneratedUuid()
 {
     $uuidGenerateUtilService = $this->getUuidGeneratorService();
     $name = <?php echo $name; ?>;
