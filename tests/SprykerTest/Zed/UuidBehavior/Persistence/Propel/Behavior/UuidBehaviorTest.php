@@ -1,15 +1,26 @@
 <?php
 /**
- * This file is part of the Spryker Suite.
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerTest\Zed\UuidBehavior\Persistense\Propel;
+namespace SprykerTest\Zed\UuidBehavior\Persistence\Propel;
 
+use Codeception\Test\Unit;
 use Propel\Generator\Util\QuickBuilder as PropelQuickBuilder;
-use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\UuidBehavior;
+use TestMain;
 
-class UuidBehaviorTest extends \Codeception\Test\Unit
+/**
+ * Auto-generated group annotations
+ * @group SprykerTest
+ * @group Zed
+ * @group UuidBehavior
+ * @group Persistence
+ * @group Propel
+ * @group UuidBehaviorTest
+ * Add your own group annotations below this line
+ */
+class UuidBehaviorTest extends Unit
 {
     protected const UUID_GENERATED_VALUE_EXPECTED = '08fd3456-4886-5b38-b649-5778ab4ca78d';
 
@@ -41,7 +52,7 @@ class UuidBehaviorTest extends \Codeception\Test\Unit
      */
     public function testUuidBehaviorGeneratesExpectedUuid(): void
     {
-        $testEntity = new \TestMain();
+        $testEntity = new TestMain();
         $testEntity->setTestStr('spryker');
         $testEntity->setTestInt(777);
         $testEntity->save();
