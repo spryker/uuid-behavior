@@ -9,6 +9,6 @@ namespace Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception;
 
 use Propel\Runtime\Exception\PropelException;
 
-class InvalidParameterValue extends PropelException
+class InvalidParameterValueException extends PropelException
 {
 }

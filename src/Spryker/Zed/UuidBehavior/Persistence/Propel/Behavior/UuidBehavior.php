@@ -10,7 +10,7 @@ use Propel\Generator\Model\Behavior;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Generator\Model\Unique;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
-use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValue;
+use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 
@@ -145,7 +145,7 @@ class UuidBehavior extends Behavior
     }
 
     /**
-     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValue
+     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException
      *
      * @return array
      */
@@ -157,7 +157,7 @@ class UuidBehavior extends Behavior
         if ($columns) {
             $columns = explode('.', $columns);
             if (!is_array($columns)) {
-                throw new InvalidParameterValue(
+                throw new InvalidParameterValueException(
                     sprintf(static::ERROR_INVALID_KEY_COLUMNS_FORMAT, $this->getTable()->getPhpName())
                 );
             }
