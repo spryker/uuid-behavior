@@ -38,7 +38,7 @@ class UuidBehaviorTest extends Unit
                         <column name="test_int" type="INTEGER" required="true"/>
                         <behavior name="uuid">
                             <parameter name="key_prefix" value="test"/>
-                            <parameter name="columns_to_key_name" value="test_str.test_int"/>
+                            <parameter name="key_columns" value="test_str.test_int"/>
                         </behavior>
                     </table>
                 </database>';

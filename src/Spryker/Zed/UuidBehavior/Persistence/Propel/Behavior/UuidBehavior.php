@@ -9,6 +9,8 @@ namespace Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior;
 use Propel\Generator\Model\Behavior;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Generator\Model\Unique;
+use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
+use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValue;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 
@@ -18,14 +20,15 @@ class UuidBehavior extends Behavior
     protected const KEY_COLUMN_UNIQUE_INDEX_POSTFIX = '-unique-uuid';
 
     protected const ERROR_MISSING_KEY_PREFIX_PARAMETER = '%s misses "key_prefix" parameter';
-    protected const ERROR_INVALID_COLUMNS_TO_KEY_NAME_PARAMETER = 'Invalid data passed to %s as "columns_to_key_name" parameter';
+    protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
+    protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
 
     /**
      * @var array
      */
     protected $parameters = [
         'key_prefix' => null,
-        'columns_to_key_name' => [],
+        'key_columns' => '',
     ];
 
     /**
@@ -103,52 +106,65 @@ class UuidBehavior extends Behavior
     protected function addSetGeneratedUuidMethod(): string
     {
         $parameters = $this->getParameters();
-        $keyValues = null;
-
         if (!isset($parameters['key_prefix'])) {
             throw new MissingAttributeException(
                 sprintf(static::ERROR_MISSING_KEY_PREFIX_PARAMETER, $this->getTable()->getPhpName())
             );
         }
 
-        $name = '\'' . $parameters['key_prefix'] . '\'';
-        if ($columns = $this->getColumnsToKeyNameParameter()) {
-            $columns = explode('.', $columns);
-            if (!is_array($columns)) {
-                throw new MissingAttributeException(
-                    sprintf(static::ERROR_INVALID_COLUMNS_TO_KEY_NAME_PARAMETER, $this->getTable()->getPhpName())
-                );
-            }
-
-            $filter = new UnderscoreToCamelCase();
-            foreach ($columns as $column) {
-                if ($this->getTable()->hasColumn($column)) {
-                    $keyValues[] = sprintf('get%s()', $filter->filter($column));
-                }
-            }
-        }
-
-        if ($keyValues !== null) {
-            foreach ($keyValues as $keyValue) {
-                $name .= " . '.' . \$this->{$keyValue}";
-            }
-        }
-
         return $this->renderTemplate('objectSetGeneratedUuid', [
-            'name' => $name,
+            'keyStatement' => $this->prepareKeyStatement($parameters['key_prefix']),
         ]);
     }
 
     /**
+     * @param string $prefix
+     *
+     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException
+     *
      * @return string
      */
-    protected function getColumnsToKeyNameParameter(): string
+    protected function prepareKeyStatement(string $prefix): string
     {
-        $columns = '';
-        if (isset($this->getParameters()['columns_to_key_name'])) {
-            $columns = $this->getParameters()['columns_to_key_name'];
+        $keyStatement = '\'' . $prefix . '\'';
+        $columns = $this->getKeyColumnNames();
+
+        $filter = new UnderscoreToCamelCase();
+        foreach ($columns as $column) {
+            if (!$this->getTable()->hasColumn($column)) {
+                throw new ColumnNotFoundException(sprintf(
+                    static::ERROR_COLUMN_NOT_FOUND,
+                    $column
+                ));
+            }
+            $getter = sprintf('get%s()', $filter->filter($column));
+            $keyStatement .= " . '.' . \$this->{$getter}";
         }
 
-        return $columns;
+        return $keyStatement;
+    }
+
+    /**
+     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValue
+     *
+     * @return array
+     */
+    protected function getKeyColumnNames(): array
+    {
+
+        $columns = $this->getParameters()['key_columns'] ?? '';
+
+        if ($columns) {
+            $columns = explode('.', $columns);
+            if (!is_array($columns)) {
+                throw new InvalidParameterValue(
+                    sprintf(static::ERROR_INVALID_KEY_COLUMNS_FORMAT, $this->getTable()->getPhpName())
+                );
+            }
+
+            return $columns;
+        }
+
+        return [];
     }
 }
