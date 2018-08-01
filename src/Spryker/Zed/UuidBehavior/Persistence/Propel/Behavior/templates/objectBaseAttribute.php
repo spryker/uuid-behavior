@@ -1,4 +1,4 @@
 /**
-* @var \Spryker\Zed\Kernel\Locator
+* @var \Spryker\Service\UtilUuidGenerator\UtilUuidGeneratorServiceInterface
 */
-private $_locator;
+protected static $_uuidGeneratorService;

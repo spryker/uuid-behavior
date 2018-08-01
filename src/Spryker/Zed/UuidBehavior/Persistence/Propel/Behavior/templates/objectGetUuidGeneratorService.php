@@ -3,10 +3,9 @@
 */
 protected function getUuidGeneratorService()
 {
-    if ($this->_locator === null) {
-        $this->_locator = \Spryker\Zed\Kernel\Locator::getInstance();
+    if (static::$_uuidGeneratorService === null) {
+        static::$_uuidGeneratorService = \Spryker\Zed\Kernel\Locator::getInstance()->utilUuidGenerator()->service();
     }
-    $uuidGenerationService = $this->_locator->utilUuidGenerator()->service();
 
-    return $uuidGenerationService;
+    return static::$_uuidGeneratorService;
 }
