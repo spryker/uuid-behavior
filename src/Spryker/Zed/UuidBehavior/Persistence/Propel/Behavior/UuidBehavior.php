@@ -126,7 +126,7 @@ class UuidBehavior extends Behavior
      */
     protected function prepareKeyStatement(string $prefix): string
     {
-        $keyStatement = '\'' . $prefix . '\'';
+        $keyStatement = sprintf("'%s'", $prefix);
         $columns = $this->getKeyColumnNames();
 
         $filter = new UnderscoreToCamelCase();
@@ -138,7 +138,7 @@ class UuidBehavior extends Behavior
                 ));
             }
             $getter = sprintf('get%s()', $filter->filter($column));
-            $keyStatement .= " . '.' . \$this->{$getter}";
+            $keyStatement .= sprintf(" . '.' . \$this->%s", $getter);
         }
 
         return $keyStatement;
