@@ -23,6 +23,9 @@ class UuidBehavior extends Behavior
     protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
 
+    /**
+     * @var int
+     */
     protected $tableModificationOrder = 1000;
 
     /**
@@ -158,7 +161,7 @@ class UuidBehavior extends Behavior
                     $column
                 ));
             }
-            
+
             $getter = sprintf('get%s()', $filter->filter($column));
             $keyStatement .= sprintf(" . '.' . \$this->%s", $getter);
         }
