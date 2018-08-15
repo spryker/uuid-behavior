@@ -23,6 +23,8 @@ class UuidBehavior extends Behavior
     protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
 
+    protected $tableModificationOrder = 1000;
+
     /**
      * @var array
      */
@@ -45,9 +47,19 @@ class UuidBehavior extends Behavior
     /**
      * @return string
      */
-    public function preSave(): string
+    public function preUpdate(): string
     {
         return '$this->setGeneratedUuid();';
+    }
+
+    /**
+     * @return string
+     */
+    public function postInsert(): string
+    {
+        return '$this->setGeneratedUuid();'
+            . PHP_EOL
+            . '$this->updateUuidAfterInsert();';
     }
 
     /**
@@ -58,6 +70,7 @@ class UuidBehavior extends Behavior
         $script = '';
         $script .= $this->addGetUuidGeneratorServiceMethod();
         $script .= $this->addSetGeneratedUuidMethod();
+        $script .= $this->addUpdateUuidAfterInsertMethod();
 
         return $script;
     }
@@ -118,6 +131,14 @@ class UuidBehavior extends Behavior
     }
 
     /**
+     * @return string
+     */
+    protected function addUpdateUuidAfterInsertMethod(): string
+    {
+        return $this->renderTemplate('objectUpdateUuidAfterInsert');
+    }
+
+    /**
      * @param string $prefix
      *
      * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException
@@ -137,6 +158,7 @@ class UuidBehavior extends Behavior
                     $column
                 ));
             }
+            
             $getter = sprintf('get%s()', $filter->filter($column));
             $keyStatement .= sprintf(" . '.' . \$this->%s", $getter);
         }
@@ -151,7 +173,6 @@ class UuidBehavior extends Behavior
      */
     protected function getKeyColumnNames(): array
     {
-
         $columns = $this->getParameters()['key_columns'] ?? '';
 
         if ($columns) {
