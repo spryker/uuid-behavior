@@ -24,6 +24,8 @@ class UuidBehavior extends Behavior
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
 
     /**
+     * {@inheritdoc}
+     *
      * @var int
      */
     protected $tableModificationOrder = 1000;
