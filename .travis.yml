@@ -4,11 +4,7 @@ sudo: false
 
 php:
     - 7.1
-
-cache:
-    directories:
-        - vendor
-        - $HOME/.composer/cache
+    - 7.2
 
 env:
   global:
