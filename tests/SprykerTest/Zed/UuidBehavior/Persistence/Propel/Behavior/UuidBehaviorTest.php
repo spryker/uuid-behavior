@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerTest\Zed\UuidBehavior\Persistence\Propel;
+namespace SprykerTest\Zed\UuidBehavior\Persistence\Propel\Behavior;
 
 use Codeception\Test\Unit;
 use Propel\Generator\Util\QuickBuilder as PropelQuickBuilder;
@@ -17,6 +18,7 @@ use TestMain;
  * @group UuidBehavior
  * @group Persistence
  * @group Propel
+ * @group Behavior
  * @group UuidBehaviorTest
  * Add your own group annotations below this line
  */

@@ -1,7 +1,13 @@
+
 /**
-* @return void
-*/
-protected function updateUuidAfterInsert()
+ * @param ConnectionInterface $con
+ *
+ * @return void
+ */
+protected function updateUuidAfterInsert(ConnectionInterface $con = null)
 {
-    $this->doSave(Propel::getConnection());
+    if (empty($this->getUuid())) {
+        $this->setGeneratedUuid();
+        $this->doSave($con);
+    }
 }
