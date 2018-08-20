@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -11,7 +12,6 @@ use Propel\Generator\Model\PropelTypes;
 use Propel\Generator\Model\Unique;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException;
-use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 
 class UuidBehavior extends Behavior
@@ -19,7 +19,6 @@ class UuidBehavior extends Behavior
     protected const KEY_COLUMN_NAME = 'uuid';
     protected const KEY_COLUMN_UNIQUE_INDEX_POSTFIX = '-unique-uuid';
 
-    protected const ERROR_MISSING_KEY_PREFIX_PARAMETER = '%s misses "key_prefix" parameter';
     protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
 
@@ -45,9 +44,17 @@ class UuidBehavior extends Behavior
     /**
      * @return string
      */
-    public function preSave(): string
+    public function preUpdate(): string
     {
-        return '$this->setGeneratedUuid();';
+        return '$this->updateUuidBeforeUpdate();';
+    }
+
+    /**
+     * @return string
+     */
+    public function postInsert(): string
+    {
+        return '$this->updateUuidAfterInsert($con);';
     }
 
     /**
@@ -58,6 +65,8 @@ class UuidBehavior extends Behavior
         $script = '';
         $script .= $this->addGetUuidGeneratorServiceMethod();
         $script .= $this->addSetGeneratedUuidMethod();
+        $script .= $this->addUpdateUuidAfterInsertMethod();
+        $script .= $this->addUpdateUuidBeforeUpdateMethod();
 
         return $script;
     }
@@ -99,22 +108,34 @@ class UuidBehavior extends Behavior
     }
 
     /**
-     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\MissingAttributeException
-     *
      * @return string
      */
     protected function addSetGeneratedUuidMethod(): string
     {
         $parameters = $this->getParameters();
         if (!isset($parameters['key_prefix'])) {
-            throw new MissingAttributeException(
-                sprintf(static::ERROR_MISSING_KEY_PREFIX_PARAMETER, $this->getTable()->getPhpName())
-            );
+            $parameters['key_prefix'] = $this->table->getCommonName();
         }
 
         return $this->renderTemplate('objectSetGeneratedUuid', [
             'keyStatement' => $this->prepareKeyStatement($parameters['key_prefix']),
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function addUpdateUuidAfterInsertMethod(): string
+    {
+        return $this->renderTemplate('objectUpdateUuidAfterInsert');
+    }
+
+    /**
+     * @return string
+     */
+    protected function addUpdateUuidBeforeUpdateMethod(): string
+    {
+        return $this->renderTemplate('objectUpdateUuidBeforeUpdate');
     }
 
     /**
@@ -137,6 +158,7 @@ class UuidBehavior extends Behavior
                     $column
                 ));
             }
+
             $getter = sprintf('get%s()', $filter->filter($column));
             $keyStatement .= sprintf(" . '.' . \$this->%s", $getter);
         }
@@ -151,7 +173,6 @@ class UuidBehavior extends Behavior
      */
     protected function getKeyColumnNames(): array
     {
-
         $columns = $this->getParameters()['key_columns'] ?? '';
 
         if ($columns) {

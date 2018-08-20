@@ -1,3 +1,4 @@
+
 /**
  * @return \Spryker\Service\UtilUuidGenerator\UtilUuidGeneratorServiceInterface
  */
