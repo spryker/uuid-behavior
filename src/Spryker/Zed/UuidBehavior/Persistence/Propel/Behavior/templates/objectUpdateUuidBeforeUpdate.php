@@ -4,7 +4,7 @@
  */
 protected function updateUuidBeforeUpdate()
 {
-    if (empty($this->getUuid())) {
+    if (!$this->getUuid()) {
         $this->setGeneratedUuid();
     }
 }
