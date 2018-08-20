@@ -1,6 +1,6 @@
 /**
-* @return \Spryker\Service\UtilUuidGenerator\UtilUuidGeneratorServiceInterface
-*/
+ * @return \Spryker\Service\UtilUuidGenerator\UtilUuidGeneratorServiceInterface
+ */
 protected function getUuidGeneratorService()
 {
     if (static::$_uuidGeneratorService === null) {

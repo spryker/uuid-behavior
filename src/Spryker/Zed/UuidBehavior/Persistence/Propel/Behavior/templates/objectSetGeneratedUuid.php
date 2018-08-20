@@ -1,6 +1,6 @@
 /**
-* @return void
-*/
+ * @return void
+ */
 protected function setGeneratedUuid()
 {
     $uuidGenerateUtilService = $this->getUuidGeneratorService();
