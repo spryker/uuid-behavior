@@ -6,7 +6,7 @@
  */
 protected function updateUuidAfterInsert(ConnectionInterface $con = null)
 {
-    if (empty($this->getUuid())) {
+    if (!$this->getUuid()) {
         $this->setGeneratedUuid();
         $this->doSave($con);
     }
