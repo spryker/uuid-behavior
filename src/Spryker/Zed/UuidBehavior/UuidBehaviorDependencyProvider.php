@@ -9,6 +9,9 @@ namespace Spryker\Zed\UuidBehavior;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 
+/**
+ * @method \Spryker\Zed\UuidBehavior\UuidBehaviorConfig getConfig()
+ */
 class UuidBehaviorDependencyProvider extends AbstractBundleDependencyProvider
 {
 }
