@@ -3,7 +3,8 @@ language: php
 sudo: false
 
 php:
-    - 7.1
+  - 7.1
+  - 7.3
 
 env:
   global:
@@ -18,13 +19,21 @@ matrix:
 
   allow_failures:
     - php: 7.1
+    - php: 7.3    
+
+before_install:
+  - phpenv config-rm xdebug.ini
 
 before_script:
-    - composer install --no-interaction --prefer-dist
+  - COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --prefer-dist
 
 script:
-      - if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
-      - if [[ $PHPCS == 1 ]]; then composer cs-check ; fi
+  - if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
+  - if [[ $PHPCS == 1 ]]; then composer cs-check ; fi
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 notifications:
     email: false
