@@ -161,7 +161,7 @@ class UuidBehavior extends Behavior
 
             switch ($this->getTable()->getColumn($column)->getType()) {
                 case 'TIMESTAMP':
-                    $getter = sprintf('$this->get%s(\'U\')', $filter->filter($column));
+                    $getter = sprintf('$this->get%s(\'U u\')', $filter->filter($column));
                     break;
                 default:
                     $getter = sprintf('$this->get%s()', $filter->filter($column));
