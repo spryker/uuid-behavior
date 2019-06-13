@@ -159,8 +159,15 @@ class UuidBehavior extends Behavior
                 ));
             }
 
-            $getter = sprintf('get%s()', $filter->filter($column));
-            $keyStatement .= sprintf(" . '.' . \$this->%s", $getter);
+            switch ($this->getTable()->getColumn($column)->getType()) {
+                case 'TIMESTAMP':
+                    $getter = sprintf('$this->get%s(\'U\')', $filter->filter($column));
+                    break;
+                default:
+                    $getter = sprintf('$this->get%s()', $filter->filter($column));
+            }
+
+            $keyStatement .= sprintf(" . '.' . %s", $getter);
         }
 
         return $keyStatement;
