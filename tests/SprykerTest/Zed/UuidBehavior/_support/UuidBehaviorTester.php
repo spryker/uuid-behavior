@@ -24,7 +24,7 @@ use Codeception\Actor;
  *
  * @SuppressWarnings(PHPMD)
  */
-class UuidBehaviorTester extends \Codeception\Actor
+class UuidBehaviorTester extends Actor
 {
     use _generated\UuidBehaviorTesterActions;
 
