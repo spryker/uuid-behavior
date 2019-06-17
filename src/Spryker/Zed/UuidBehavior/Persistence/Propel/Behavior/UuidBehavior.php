@@ -18,7 +18,7 @@ class UuidBehavior extends Behavior
 {
     protected const KEY_COLUMN_NAME = 'uuid';
     protected const KEY_COLUMN_UNIQUE_INDEX_POSTFIX = '-unique-uuid';
-    protected const DATETIME_FORMAT = '\'U u\'';
+    protected const DATETIME_FORMAT = "'U u'";
 
     protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
@@ -148,12 +148,12 @@ class UuidBehavior extends Behavior
     {
         $columns = $this->getKeyColumnNames();
 
-        $keyStatements = [sprintf('\'%s\'', $prefix)];
+        $keyStatements = [sprintf("'%s'", $prefix)];
         foreach ($columns as $column) {
             $keyStatements[] = $this->buildKeyStatement($column);
         }
 
-        return implode(' . \'.\' . ', $keyStatements);
+        return implode(" . '.' . ", $keyStatements);
     }
 
     /**
