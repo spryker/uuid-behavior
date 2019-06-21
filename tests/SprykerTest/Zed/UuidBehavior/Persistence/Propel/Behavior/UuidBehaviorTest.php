@@ -9,7 +9,7 @@ namespace SprykerTest\Zed\UuidBehavior\Persistence\Propel\Behavior;
 
 use Codeception\Test\Unit;
 use Propel\Generator\Util\QuickBuilder as PropelQuickBuilder;
-use TestMain;
+use TestUuidBehavior;
 
 /**
  * Auto-generated group annotations
@@ -24,41 +24,71 @@ use TestMain;
  */
 class UuidBehaviorTest extends Unit
 {
-    protected const UUID_GENERATED_VALUE_EXPECTED = '08fd3456-4886-5b38-b649-5778ab4ca78d';
+    protected const UUID_WITH_UNDEFINED_TIMESTAMP = '1db91ff6-2d7f-5353-9150-7d783ad572b5';
+    protected const UUID_WITH_TIMESTAMP = '19016712-311a-551d-97bb-f594e583500f';
 
     /**
      * @return void
      */
-    public function setUp(): void
+    public function testUuidBehaviorGeneratesExpectedUuidWithUndefinedTimestamp(): void
     {
-        if (!class_exists('UuidTest')) {
-            $schema = '
-                <database name="test_db" defaultIdMethod="native">
-                    <table name="test_main">
-                        <column name="id_test" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
-                        <column name="test_str" type="VARCHAR" required="true"/>
-                        <column name="test_int" type="INTEGER" required="true"/>
-                        <behavior name="uuid">
-                            <parameter name="key_prefix" value="test"/>
-                            <parameter name="key_columns" value="test_str.test_int"/>
-                        </behavior>
-                    </table>
-                </database>';
+        // Arrange
+        $this->buildPropelEntities();
 
-            PropelQuickBuilder::buildSchema($schema);
-        }
+        // Act
+        $testEntity = new TestUuidBehavior();
+        $testEntity->setTestStr('spryker');
+        $testEntity->setTestInt(777);
+        $testEntity->save();
+
+        // Assert
+        $this->assertSame($testEntity->getUuid(), static::UUID_WITH_UNDEFINED_TIMESTAMP);
     }
 
     /**
      * @return void
      */
-    public function testUuidBehaviorGeneratesExpectedUuid(): void
+    public function testUuidBehaviorGeneratesExpectedUuidWithTimestamp(): void
     {
-        $testEntity = new TestMain();
+        // Arrange
+        $this->buildPropelEntities();
+
+        // Act
+        $testEntity = new TestUuidBehavior();
         $testEntity->setTestStr('spryker');
         $testEntity->setTestInt(777);
+        $testEntity->setTestTimestamp(777);
         $testEntity->save();
 
-        $this->assertSame($testEntity->getUuid(), static::UUID_GENERATED_VALUE_EXPECTED);
+        // Assert
+        $this->assertSame($testEntity->getUuid(), static::UUID_WITH_TIMESTAMP);
+    }
+
+    /**
+     * @uses TestUuidBehavior
+     *
+     * @return void
+     */
+    protected function buildPropelEntities(): void
+    {
+        if (class_exists('TestUuidBehavior')) {
+            return;
+        }
+
+        $schema = '
+            <database name="test_uuid_behavior" defaultIdMethod="native">
+                <table name="test_uuid_behavior">
+                    <column name="id_test" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+                    <column name="test_str" type="VARCHAR" required="true"/>
+                    <column name="test_int" type="INTEGER" required="true"/>
+                    <column name="test_timestamp" type="TIMESTAMP" required="false"/>
+                    <behavior name="uuid">
+                        <parameter name="key_prefix" value="test"/>
+                        <parameter name="key_columns" value="test_str.test_int.test_timestamp"/>
+                    </behavior>
+                </table>
+            </database>';
+
+        PropelQuickBuilder::buildSchema($schema);
     }
 }

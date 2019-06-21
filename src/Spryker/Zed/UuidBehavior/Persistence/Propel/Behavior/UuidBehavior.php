@@ -18,6 +18,7 @@ class UuidBehavior extends Behavior
 {
     protected const KEY_COLUMN_NAME = 'uuid';
     protected const KEY_COLUMN_UNIQUE_INDEX_POSTFIX = '-unique-uuid';
+    protected const DATETIME_FORMAT = "'U u'";
 
     protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
@@ -141,29 +142,18 @@ class UuidBehavior extends Behavior
     /**
      * @param string $prefix
      *
-     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException
-     *
      * @return string
      */
     protected function prepareKeyStatement(string $prefix): string
     {
-        $keyStatement = sprintf("'%s'", $prefix);
         $columns = $this->getKeyColumnNames();
 
-        $filter = new UnderscoreToCamelCase();
+        $keyStatements = [sprintf("'%s'", $prefix)];
         foreach ($columns as $column) {
-            if (!$this->getTable()->hasColumn($column)) {
-                throw new ColumnNotFoundException(sprintf(
-                    static::ERROR_COLUMN_NOT_FOUND,
-                    $column
-                ));
-            }
-
-            $getter = sprintf('get%s()', $filter->filter($column));
-            $keyStatement .= sprintf(" . '.' . \$this->%s", $getter);
+            $keyStatements[] = $this->buildKeyStatement($column);
         }
 
-        return $keyStatement;
+        return implode(" . '.' . ", $keyStatements);
     }
 
     /**
@@ -187,5 +177,29 @@ class UuidBehavior extends Behavior
         }
 
         return [];
+    }
+
+    /**
+     * @param string $column
+     *
+     * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException
+     *
+     * @return string
+     */
+    protected function buildKeyStatement(string $column): string
+    {
+        if (!$this->getTable()->hasColumn($column)) {
+            throw new ColumnNotFoundException(sprintf(
+                static::ERROR_COLUMN_NOT_FOUND,
+                $column
+            ));
+        }
+
+        $filter = new UnderscoreToCamelCase();
+        if ($this->getTable()->getColumn($column)->getType() === 'TIMESTAMP') {
+            return sprintf('$this->get%1$s(%2$s)', $filter->filter($column), static::DATETIME_FORMAT);
+        }
+
+        return sprintf('$this->get%s()', $filter->filter($column));
     }
 }
