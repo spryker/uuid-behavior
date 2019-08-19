@@ -1,5 +1,5 @@
 {
   "include": {
-    "UtilUuidGenerator": "UtilUuidGenerator only used within templates."
+    "spryker/util-uuid-generator": "UtilUuidGenerator only used within templates."
   }
 }
