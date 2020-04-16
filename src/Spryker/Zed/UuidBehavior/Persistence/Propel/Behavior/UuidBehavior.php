@@ -8,6 +8,7 @@
 namespace Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior;
 
 use Propel\Generator\Model\Behavior;
+use Propel\Generator\Model\Column;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Generator\Model\Unique;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
@@ -87,7 +88,7 @@ class UuidBehavior extends Behavior
 
             $uniqueIndex = new Unique();
             $uniqueIndex->setName($table->getName() . static::KEY_COLUMN_UNIQUE_INDEX_POSTFIX);
-            $uniqueIndex->addColumn($column);
+            $uniqueIndex->addColumn(new Column(static::KEY_COLUMN_NAME));
             $table->addUnique($uniqueIndex);
         }
     }
