@@ -1,55 +1,5 @@
 {
-    "error": [
-        {
-            "severity": "error",
-            "line_from": 8,
-            "line_to": 8,
-            "type": "UndefinedGlobalVariable",
-            "message": "Cannot find referenced variable $keyStatement in global scope",
-            "file_name": "vendor/spryker/uuid-behavior/src/Spryker/Zed/UuidBehavior/Persistence/Propel/Behavior/templates/objectSetGeneratedUuid.php",
-            "snippet": "    $name = <?php echo $keyStatement; ?>;",
-            "selected_text": "$keyStatement",
-            "error_level": -1,
-            "shortcode": 127
-        }
-    ],
-    "warning": [
-        {
-            "severity": "info",
-            "line_from": 171,
-            "line_to": 171,
-            "type": "TypeDoesNotContainType",
-            "message": "Found a contradiction when evaluating $columns and trying to reconcile type 'non-empty-list<string>' to !array",
-            "file_name": "vendor/spryker/uuid-behavior/src/Spryker/Zed/UuidBehavior/Persistence/Propel/Behavior/UuidBehavior.php",
-            "snippet": "            if (!is_array($columns)) {",
-            "selected_text": "is_array($columns)",
-            "error_level": 4,
-            "shortcode": 56
-        },
-        {
-            "severity": "info",
-            "line_from": 201,
-            "line_to": 201,
-            "type": "PossiblyInvalidArgument",
-            "message": "Argument 2 of sprintf expects float|int|string, possibly different type array<array-key, mixed>|string provided",
-            "file_name": "vendor/spryker/uuid-behavior/src/Spryker/Zed/UuidBehavior/Persistence/Propel/Behavior/UuidBehavior.php",
-            "snippet": "            return sprintf('$this->get%1$s(%2$s)', $filter->filter($column), static::DATETIME_FORMAT);",
-            "selected_text": "$filter->filter($column)",
-            "error_level": 3,
-            "shortcode": 92
-        },
-        {
-            "severity": "info",
-            "line_from": 204,
-            "line_to": 204,
-            "type": "PossiblyInvalidArgument",
-            "message": "Argument 2 of sprintf expects float|int|string, possibly different type array<array-key, mixed>|string provided",
-            "file_name": "vendor/spryker/uuid-behavior/src/Spryker/Zed/UuidBehavior/Persistence/Propel/Behavior/UuidBehavior.php",
-            "snippet": "        return sprintf('$this->get%s()', $filter->filter($column));",
-            "selected_text": "$filter->filter($column)",
-            "error_level": 3,
-            "shortcode": 92
-        }
-    ],
+    "error": [],
+    "warning": [],
     "deprecation": []
 }
