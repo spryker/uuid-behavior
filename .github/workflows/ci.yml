@@ -1,9 +1,14 @@
 name: CI
 
-on: [
-    push,
-    pull_request
-]
+on:
+    pull_request:
+    push:
+        branches:
+            - master
+    schedule:
+        - cron: "0 0 * * *"
+          branches:
+              - 'master'
 
 jobs:
   validation:
@@ -13,8 +18,7 @@ jobs:
       matrix:
         php-version: [
             '7.3',
-            '7.4',
-            'nightly'
+            '7.4'
         ]
 
     steps:
@@ -37,16 +41,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Composer install
-        run: |
-          composer --version
-          composer install -o
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, intl, pdo_mysql
+
+      - name: Composer install
+        run: |
+          composer --version
+          composer install -o
 
       - name: CodeStyle checks
         run: composer cs-check
