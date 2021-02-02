@@ -1,6 +1,5 @@
 # UuidBehavior Module
 [![Build Status](https://travis-ci.org/spryker/uuid-behavior.svg?branch=master)](https://travis-ci.org/spryker/uuid-behavior)
-[![Coverage Status](https://coveralls.io/repos/github/spryker/uuid-behavior/badge.svg)](https://coveralls.io/github/spryker/uuid-behavior)
 
 Propel behavior for UUID key generation
 
