@@ -17,11 +17,26 @@ use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParame
 
 class UuidBehavior extends Behavior
 {
+    /**
+     * @var string
+     */
     protected const KEY_COLUMN_NAME = 'uuid';
+    /**
+     * @var string
+     */
     protected const KEY_COLUMN_UNIQUE_INDEX_POSTFIX = '-unique-uuid';
+    /**
+     * @var string
+     */
     protected const DATETIME_FORMAT = "'U u'";
 
+    /**
+     * @var string
+     */
     protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
+    /**
+     * @var string
+     */
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
 
     /**

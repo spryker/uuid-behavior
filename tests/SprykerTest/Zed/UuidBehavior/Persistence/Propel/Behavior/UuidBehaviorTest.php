@@ -25,7 +25,13 @@ use TestUuidBehavior;
  */
 class UuidBehaviorTest extends Unit
 {
+    /**
+     * @var string
+     */
     protected const UUID_WITH_UNDEFINED_TIMESTAMP = '1db91ff6-2d7f-5353-9150-7d783ad572b5';
+    /**
+     * @var string
+     */
     protected const UUID_WITH_TIMESTAMP = '19016712-311a-551d-97bb-f594e583500f';
 
     /**
