@@ -21,10 +21,12 @@ class UuidBehavior extends Behavior
      * @var string
      */
     protected const KEY_COLUMN_NAME = 'uuid';
+
     /**
      * @var string
      */
     protected const KEY_COLUMN_UNIQUE_INDEX_POSTFIX = '-unique-uuid';
+
     /**
      * @var string
      */
@@ -34,6 +36,7 @@ class UuidBehavior extends Behavior
      * @var string
      */
     protected const ERROR_INVALID_KEY_COLUMNS_FORMAT = 'Invalid data passed to %s as "key_columns" parameter';
+
     /**
      * @var string
      */
@@ -185,7 +188,7 @@ class UuidBehavior extends Behavior
             $columns = explode('.', $columns);
             if (!is_array($columns)) {
                 throw new InvalidParameterValueException(
-                    sprintf(static::ERROR_INVALID_KEY_COLUMNS_FORMAT, $this->getTable()->getPhpName())
+                    sprintf(static::ERROR_INVALID_KEY_COLUMNS_FORMAT, $this->getTable()->getPhpName()),
                 );
             }
 
@@ -207,7 +210,7 @@ class UuidBehavior extends Behavior
         if (!$this->getTable()->hasColumn($column)) {
             throw new ColumnNotFoundException(sprintf(
                 static::ERROR_COLUMN_NOT_FOUND,
-                $column
+                $column,
             ));
         }
 

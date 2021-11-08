@@ -29,6 +29,7 @@ class UuidBehaviorTest extends Unit
      * @var string
      */
     protected const UUID_WITH_UNDEFINED_TIMESTAMP = '1db91ff6-2d7f-5353-9150-7d783ad572b5';
+
     /**
      * @var string
      */
