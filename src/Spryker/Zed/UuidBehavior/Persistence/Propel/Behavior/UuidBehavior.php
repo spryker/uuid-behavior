@@ -43,7 +43,7 @@ class UuidBehavior extends Behavior
     protected const ERROR_COLUMN_NOT_FOUND = 'Column %s that is specified for generating UUID is not exist.';
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $parameters = [
         'key_prefix' => null,
@@ -178,7 +178,7 @@ class UuidBehavior extends Behavior
     /**
      * @throws \Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException
      *
-     * @return array
+     * @return array<string>
      */
     protected function getKeyColumnNames(): array
     {
@@ -215,10 +215,12 @@ class UuidBehavior extends Behavior
         }
 
         $filter = new UnderscoreToCamelCase();
+        /** @var string $value */
+        $value = $filter->filter($column);
         if ($this->getTable()->getColumn($column)->getType() === 'TIMESTAMP') {
-            return sprintf('$this->get%1$s(%2$s)', $filter->filter($column), static::DATETIME_FORMAT);
+            return sprintf('$this->get%1$s(%2$s)', $value, static::DATETIME_FORMAT);
         }
 
-        return sprintf('$this->get%s()', $filter->filter($column));
+        return sprintf('$this->get%s()', $value);
     }
 }
