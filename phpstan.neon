@@ -3,6 +3,6 @@ parameters:
     paths:
         - src/
     excludePaths:
-        - */templates/*
+        - '*/templates/*'
     ignoreErrors:
         - '#Cannot call method getType\(\) on .+Column\|null.#'
