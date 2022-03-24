@@ -18,12 +18,7 @@
     <exclude-pattern>*/tests/_helpers/*</exclude-pattern>
     <exclude-pattern>*/tests/_output/*</exclude-pattern>
 
-    <rule ref="vendor/spryker/code-sniffer/Spryker/ruleset.xml"/>
-
-    <rule ref="vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml">
-        <exclude name="SprykerStrict.TypeHints.ParameterTypeHint"/>
-        <exclude name="SprykerStrict.TypeHints.PropertyTypeHint"/>
-    </rule>
+    <rule ref="vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml"/>
 
     <!-- Define your own sniffs here -->
 
