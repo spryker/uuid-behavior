@@ -8,9 +8,11 @@
 namespace Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior;
 
 use Laminas\Filter\Word\UnderscoreToCamelCase;
+use LogicException;
 use Propel\Generator\Model\Behavior;
 use Propel\Generator\Model\Column;
 use Propel\Generator\Model\PropelTypes;
+use Propel\Generator\Model\Table;
 use Propel\Generator\Model\Unique;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException;
@@ -222,5 +224,23 @@ class UuidBehavior extends Behavior
         }
 
         return sprintf('$this->get%s()', $value);
+    }
+
+    /**
+     * Returns the table this behavior is applied to
+     *
+     * @throws \LogicException
+     *
+     * @return \Propel\Generator\Model\Table
+     */
+    public function getTableOrFail(): Table
+    {
+        $table = $this->getTable();
+
+        if ($table === null) {
+            throw new LogicException('Table is not defined.');
+        }
+
+        return $table;
     }
 }
