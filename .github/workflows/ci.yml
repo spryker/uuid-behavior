@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version: [
-            '7.4',
+            '8.0',
             '8.1'
         ]
 
@@ -55,14 +55,13 @@ jobs:
             composer stan-setup
             composer stan
 
-
   prefer-lowest:
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
         php-version: [
-            '7.4'
+            '8.0'
         ]
 
     steps:
@@ -84,14 +83,16 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-
+      
       - name: Composer prefer lowest
-        run: composer lowest-setup
+        run: composer update --prefer-lowest --prefer-stable
 
       - name: PHPStan checks
         run: |
             composer stan-setup
             composer stan
 
-      - name: Validate prefer lowest
-        run: composer lowest
+      - name: Composer lowest
+        run: |
+            composer lowest-setup
+            composer lowest

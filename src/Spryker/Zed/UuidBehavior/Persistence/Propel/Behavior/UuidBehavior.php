@@ -8,9 +8,11 @@
 namespace Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior;
 
 use Laminas\Filter\Word\UnderscoreToCamelCase;
+use LogicException;
 use Propel\Generator\Model\Behavior;
 use Propel\Generator\Model\Column;
 use Propel\Generator\Model\PropelTypes;
+use Propel\Generator\Model\Table;
 use Propel\Generator\Model\Unique;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException;
@@ -96,7 +98,7 @@ class UuidBehavior extends Behavior
      */
     public function modifyTable(): void
     {
-        $table = $this->getTable();
+        $table = $this->getTableOrFail();
 
         if (!$table->hasColumn(static::KEY_COLUMN_NAME)) {
             $column = $table->addColumn([
@@ -188,7 +190,7 @@ class UuidBehavior extends Behavior
             $columns = explode('.', $columns);
             if (!is_array($columns)) {
                 throw new InvalidParameterValueException(
-                    sprintf(static::ERROR_INVALID_KEY_COLUMNS_FORMAT, $this->getTable()->getPhpName()),
+                    sprintf(static::ERROR_INVALID_KEY_COLUMNS_FORMAT, $this->getTableOrFail()->getPhpName()),
                 );
             }
 
@@ -207,7 +209,7 @@ class UuidBehavior extends Behavior
      */
     protected function buildKeyStatement(string $column): string
     {
-        if (!$this->getTable()->hasColumn($column)) {
+        if (!$this->getTableOrFail()->hasColumn($column)) {
             throw new ColumnNotFoundException(sprintf(
                 static::ERROR_COLUMN_NOT_FOUND,
                 $column,
@@ -217,10 +219,28 @@ class UuidBehavior extends Behavior
         $filter = new UnderscoreToCamelCase();
         /** @var string $value */
         $value = $filter->filter($column);
-        if ($this->getTable()->getColumn($column)->getType() === 'TIMESTAMP') {
+        if ($this->getTableOrFail()->getColumn($column)->getType() === 'TIMESTAMP') {
             return sprintf('$this->get%1$s(%2$s)', $value, static::DATETIME_FORMAT);
         }
 
         return sprintf('$this->get%s()', $value);
+    }
+
+    /**
+     * Returns the table this behavior is applied to
+     *
+     * @throws \LogicException
+     *
+     * @return \Propel\Generator\Model\Table
+     */
+    public function getTableOrFail(): Table
+    {
+        $table = $this->getTable();
+
+        if ($table === null) {
+            throw new LogicException('Table is not defined.');
+        }
+
+        return $table;
     }
 }
