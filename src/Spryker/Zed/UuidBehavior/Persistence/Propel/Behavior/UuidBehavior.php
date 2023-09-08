@@ -14,11 +14,14 @@ use Propel\Generator\Model\Column;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Generator\Model\Table;
 use Propel\Generator\Model\Unique;
+use Spryker\Zed\PropelOrm\Business\Model\Behavior\BehaviorTrait;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException;
 
 class UuidBehavior extends Behavior
 {
+    use BehaviorTrait;
+
     /**
      * @var string
      */
@@ -118,7 +121,7 @@ class UuidBehavior extends Behavior
      */
     public function addBaseAttribute(): string
     {
-        return $this->renderTemplate('objectBaseAttribute');
+        return $this->executeRenderTemplate('objectBaseAttribute');
     }
 
     /**
@@ -126,7 +129,7 @@ class UuidBehavior extends Behavior
      */
     protected function addGetUuidGeneratorServiceMethod(): string
     {
-        return $this->renderTemplate('objectGetUuidGeneratorService');
+        return $this->executeRenderTemplate('objectGetUuidGeneratorService');
     }
 
     /**
@@ -139,7 +142,7 @@ class UuidBehavior extends Behavior
             $parameters['key_prefix'] = $this->table->getCommonName();
         }
 
-        return $this->renderTemplate('objectSetGeneratedUuid', [
+        return $this->executeRenderTemplate('objectSetGeneratedUuid', [
             'keyStatement' => $this->prepareKeyStatement($parameters['key_prefix']),
         ]);
     }
@@ -149,7 +152,7 @@ class UuidBehavior extends Behavior
      */
     protected function addUpdateUuidAfterInsertMethod(): string
     {
-        return $this->renderTemplate('objectUpdateUuidAfterInsert');
+        return $this->executeRenderTemplate('objectUpdateUuidAfterInsert');
     }
 
     /**
@@ -157,7 +160,7 @@ class UuidBehavior extends Behavior
      */
     protected function addUpdateUuidBeforeUpdateMethod(): string
     {
-        return $this->renderTemplate('objectUpdateUuidBeforeUpdate');
+        return $this->executeRenderTemplate('objectUpdateUuidBeforeUpdate');
     }
 
     /**
