@@ -7,7 +7,7 @@
         "php": ">=8.0",
         "spryker/kernel": "^3.67.0",
         "spryker/laminas": "^1.0.0",
-        "spryker/propel-orm": "^1.16.0",
+        "spryker/propel-orm": "^1.19.1",
         "spryker/util-uuid-generator": "^1.0.0"
     },
     "require-dev": {
