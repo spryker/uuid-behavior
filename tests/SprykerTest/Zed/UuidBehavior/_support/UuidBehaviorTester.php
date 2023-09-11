@@ -23,7 +23,7 @@ use Codeception\Actor;
  * @method void comment($description)
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
  *
- * @SuppressWarnings(PHPMD)
+ * @SuppressWarnings(\SprykerTest\Zed\UuidBehavior\PHPMD)
  */
 class UuidBehaviorTester extends Actor
 {
