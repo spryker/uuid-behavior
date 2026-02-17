@@ -188,7 +188,7 @@ class UuidBehavior extends Behavior
 
         if ($columns) {
             $columns = explode('.', $columns);
-            if (!is_array($columns)) {
+            if (!is_array($columns)) { // @phpstan-ignore function.alreadyNarrowedType
                 throw new InvalidParameterValueException(
                     sprintf(static::ERROR_INVALID_KEY_COLUMNS_FORMAT, $this->getTableOrFail()->getPhpName()),
                 );
