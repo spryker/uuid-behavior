@@ -5,8 +5,7 @@
     "license": "proprietary",
     "require": {
         "php": ">=8.3",
-        "spryker/kernel": "^3.67.0",
-        "spryker/laminas": "^1.0.0",
+        "spryker/kernel": "^3.88.0",
         "spryker/propel-orm": "^1.16.0",
         "spryker/util-uuid-generator": "^1.0.0"
     },
