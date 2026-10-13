@@ -7,13 +7,13 @@
 
 namespace Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior;
 
-use Laminas\Filter\Word\UnderscoreToCamelCase;
 use LogicException;
 use Propel\Generator\Model\Behavior;
 use Propel\Generator\Model\Column;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Generator\Model\Table;
 use Propel\Generator\Model\Unique;
+use Spryker\Shared\Kernel\Filter\Word\UnderscoreToCamelCase;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\ColumnNotFoundException;
 use Spryker\Zed\UuidBehavior\Persistence\Propel\Behavior\Exception\InvalidParameterValueException;
 
